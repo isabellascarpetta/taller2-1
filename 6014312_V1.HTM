@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de Triángulos - Gráficos Computacionales</title>
+    <link rel="stylesheet" href="style.css"> <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; background-color: #f4f7f6; color: #333; }
+        .container { background: white; padding: 20px; border-radius: 12px; shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 20px; }
+        canvas { border: 2px solid #2c3e50; background-color: #fff; margin-top: 15px; cursor: crosshair; }
+        .inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .point-input { border: 1px solid #ddd; padding: 10px; border-radius: 8px; }
+        .controls { text-align: center; margin-top: 10px; }
+        #message { margin: 15px; font-weight: bold; min-height: 1.2em; }
+        button { padding: 10px 20px; cursor: pointer; background-color: #3498db; color: white; border: none; border-radius: 5px; transition: 0.3s; }
+        button:hover { background-color: #2980b9; }
+        select { padding: 8px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Calculadora Geométrica: Triángulos</h2>
+       
+        <div class="inputs">
+            <div class="point-input">
+                <strong>Punto 1</strong><br>
+                X: <input type="number" id="x1" value="150" style="width:50px">
+                Y: <input type="number" id="y1" value="100" style="width:50px">
+            </div>
+            <div class="point-input">
+                <strong>Punto 2</strong><br>
+                X: <input type="number" id="x2" value="450" style="width:50px">
+                Y: <input type="number" id="y2" value="150" style="width:50px">
+            </div>
+            <div class="point-input">
+                <strong>Punto 3</strong><br>
+                X: <input type="number" id="x3" value="300" style="width:50px">
+                Y: <input type="number" id="y3" value="400" style="width:50px">
+            </div>
+        </div>
+
+        <div class="controls">
+            <label for="method">Algoritmo:</label>
+            <select id="method">
+                <option value="dda">DDA (Diferencial Digital)</option>
+                <option value="bresenham">Bresenham (Enteros)</option>
+            </select>
+            <button id="drawBtn">Validar y Dibujar</button>
+        </div>
+
+        <div id="message"></div>
+        <canvas id="mainCanvas" width="600" height="500"></canvas>
+    </div>
+
+    <script src="6014312_v1.js"></script>
+</body>
+</html>

@@ -40,22 +40,19 @@ function lineDDA(p1, p2) {
  Usa un "parámetro de decisión" para determinar si el siguiente píxel
  debe subir/bajar en el eje secundario, evitando divisiones y flotantes.
  */
-function drawBresenham(x1, y1, x2, y2, size) {
-    x1 = Math.round(x1); y1 = Math.round(y1);
-    x2 = Math.round(x2); y2 = Math.round(y2);
-
-    let dx = Math.abs(x2 - x1);
-    let dy = Math.abs(y2 - y1);
-    let sx = (x1 < x2) ? 1 : -1;
-    let sy = (y1 < y2) ? 1 : -1;
-    let err = dx - dy;
+function lineBresenham(p1, p2) {
+    let x0 = Math.round(p1.x), y0 = Math.round(p1.y);
+    let x1 = Math.round(p2.x), y1 = Math.round(p2.y);
+    let dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+    let dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+    let err = dx + dy;
 
     while (true) {
-        drawPoint(ctx, x1, y1, size);
-        if (x1 === x2 && y1 === y2) break;
+        drawPixel(x0, y0);
+        if (x0 === x1 && y0 === y1) break;
         let e2 = 2 * err;
-        if (e2 > -dy) { err -= dy; x1 += sx; }
-        if (e2 < dx) { err += dx; y1 += sy; }
+        if (e2 >= dy) { err += dy; x0 += sx; }
+        if (e2 <= dx) { err += dx; y0 += sy; }
     }
 }
 

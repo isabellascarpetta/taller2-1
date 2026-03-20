@@ -1,36 +1,40 @@
 const canvas = document.getElementById('mainCanvas');
 const ctx = canvas.getContext('2d');
-const drawBtn = document.getElementById('drawBtn');
 const messageDiv = document.getElementById('message');
 
-function drawPoint(ctx, x, y, size) {
-    ctx.fillRect(x - size/2, y - size/2, size, size);
+
+let points = [
+    { x: 100, y: 300, color: '#ef4444' },
+    { x: 400, y: 300, color: '#10b981' },
+    { x: 250, y: 100, color: '#3b82f6' }
+];
+let draggingPoint = null;
+
+//Para dibujar en el canva
+
+function drawPixel(x, y, color = "#1e293b") {
+    ctx.fillStyle = color;
+    ctx.fillRect(Math.round(x), Math.round(y), 2, 2);
 }
 
-/**
- ALGORITMO DDA (Digital Differential Analyzer)
- Concepto: Calcula la pendiente (m) y avanza en pasos de 1 unidad en el eje
- de mayor longitud, calculando el valor flotante del otro eje y redondeándolo.
- */
-function drawDDA(x1, y1, x2, y2, size) {
-    let dx = x2 - x1;
-    let dy = y2 - y1;
+/*ALGORITMO DDA: Concepto: Calcula la pendiente (m) y avanza en pasos de 1 unidad en el eje
+ de mayor longitud, calculando el valor flotante del otro eje y redondeándolo.*/
+
+function lineDDA(p1, p2) {
+    let dx = p2.x - p1.x;
+    let dy = p2.y - p1.y;
     let steps = Math.max(Math.abs(dx), Math.abs(dy));
-   
-    let xIncrement = dx / steps;
-    let yIncrement = dy / steps;
-   
-    let x = x1;
-    let y = y1;
-   
+    let xInc = dx / steps;
+    let yInc = dy / steps;
+    let x = p1.x, y = p1.y;
+
     for (let i = 0; i <= steps; i++) {
-        drawPoint(ctx, Math.round(x), Math.round(y), size);
-        x += xIncrement;
-        y += yIncrement;
+        drawPixel(x, y);
+        x += xInc; y += yInc;
     }
 }
 
-/**
+/*
  ALGORITMO DE BRESENHAM
  Concepto: Optimización que utiliza solo aritmética de enteros.
  Usa un "parámetro de decisión" para determinar si el siguiente píxel

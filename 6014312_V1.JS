@@ -56,31 +56,45 @@ function lineBresenham(p1, p2) {
     }
 }
 
-function drawLine(x1, y1, x2, y2, size, method) {
-    ctx.fillStyle = "#2c3e50"; // Color de la línea
-    if (method === 'dda') {
-        drawDDA(x1, y1, x2, y2, size);
-    } else {
-        drawBresenham(x1, y1, x2, y2, size);
-    }
-}
-
-function drawGrid() {
+function drawScene() {
+    // 1. Limpiar y dibujar fondo 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = "#e0e0e0";
-    ctx.fillStyle = "#888";
-    ctx.font = "10px Arial";
+    drawGrid();
 
-    // Ejes y medidas numéricas
-    for (let i = 0; i <= canvas.width; i += 50) {
-        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
-        ctx.fillText(i, i + 2, 12); // Números en X
+    // 2. Obtener valores 
+    const p1 = { x: parseInt(document.getElementById('x1').value), y: parseInt(document.getElementById('y1').value) };
+    const p2 = { x: parseInt(document.getElementById('x2').value), y: parseInt(document.getElementById('y2').value) };
+    const p3 = { x: parseInt(document.getElementById('x3').value), y: parseInt(document.getElementById('y3').value) };
+    const method = document.getElementById('method').value;
+
+    // 3. fórmula original del área
+    const area = Math.abs(p1.x*(p2.y - p3.y) + p2.x*(p3.y - p1.y) + p3.x*(p1.y - p2.y)) / 2;
+
+    if (area > 0) {
+        messageDiv.innerText = "RESULTADO: Triángulo válido";
+        messageDiv.style.color = "#27ae60";
+        
+        // Dibujamos las 3 líneas
+        if (method === 'dda') {
+            lineDDA(p1, p2); lineDDA(p2, p3); lineDDA(p3, p1);
+        } else {
+            lineBresenham(p1, p2); lineBresenham(p2, p3); lineBresenham(p3, p1);
+        }
+    } else {
+        messageDiv.innerText = "RESULTADO: Puntos colineales";
+        messageDiv.style.color = "#e74c3c";
     }
-    for (let j = 0; j <= canvas.height; j += 50) {
-        ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
-        ctx.fillText(j, 2, j - 2); // Números en Y
-    }
+
+    // 4. Dibujar los puntos 
+    [p1, p2, p3].forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = "#2c3e50";
+        ctx.fill();
+    });
 }
+
+
 
 function processTriangle() {
     drawGrid();
